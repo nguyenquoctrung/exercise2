@@ -46,7 +46,10 @@ defmodule Exercise2.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:httpoison, "~> 0.12"},
-      {:floki, "~> 0.31.0"}
+      {:floki, "~> 0.31.0"},
+      {:ecto_sql, "~> 3.2"},
+      {:postgrex, "~> 0.15"},
+      {:jason, "~> 1.2"}
     ]
   end
 

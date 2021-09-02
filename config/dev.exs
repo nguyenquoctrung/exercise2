@@ -4,7 +4,7 @@ use Mix.Config
 config :exercise2, Exercise2.Repo,
   username: "postgres",
   password: "postgres",
-  database: "exercise2_dev",
+  database: "exercise2_repo",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

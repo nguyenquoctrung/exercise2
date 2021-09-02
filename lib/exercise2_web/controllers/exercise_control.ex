@@ -1,6 +1,6 @@
 defmodule Exercise2Web.ExerciseController do
   use Exercise2Web, :controller
-  @url "https://phephims.net/the-loai/phim-hoat-hinh?page="
+  @url "https://phephims.net/the-loai/phim-hoat-hinh"
 
   def index(conn, _params) do
     Crawly.save_file(@url)
@@ -12,4 +12,5 @@ defmodule Exercise2Web.ExerciseController do
     # end
     render(conn, "index.html")
   end
+
 end

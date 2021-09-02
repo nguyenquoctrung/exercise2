@@ -14,9 +14,10 @@ defmodule Exercise2.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Exercise2.PubSub},
       # Start the Endpoint (http/https)
-      Exercise2Web.Endpoint
+      Exercise2Web.Endpoint,
       # Start a worker by calling: Exercise2.Worker.start_link(arg)
       # {Exercise2.Worker, arg}
+      Film.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -18,6 +18,7 @@ defmodule Exercise2Web.Router do
 
     get "/", PageController, :index
     get "/exercise", ExerciseController, :index
+    get "/exercise2", Exercise2Controller, :index
   end
 
   # Other scopes may use custom stacks.

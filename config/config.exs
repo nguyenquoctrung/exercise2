@@ -7,6 +7,12 @@
 # General application configuration
 use Mix.Config
 
+config :exercise2, Film.Repo,
+  database: "exercise2_repo",
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost"
+
 config :exercise2,
   ecto_repos: [Exercise2.Repo]
 
@@ -28,4 +34,7 @@ config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
+
+# config :film, ecto_repos: [Film.Repo]
+
 import_config "#{Mix.env()}.exs"

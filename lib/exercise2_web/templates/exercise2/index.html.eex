@@ -1,0 +1,23 @@
+<section class="phx-hero">
+  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
+  <p>Peace of mind from prototype to production</p>
+</section>
+
+<section class="phx-product">
+<div>Total     : <%=@data.total%> </div>
+<div>Crawled_at: <%=@data.crawled_at%> </div>
+<div class="row row-wrap">
+<%= for item <- @data.items do %>
+  <div class="column column-25 ">
+    <div class="item">
+      <div style="background-image: url(<%= item["thumnail"]%>); background-size: cover; height: 284.2px;"></div>
+      <a href="<%= item["link"]%>" target="_blank" class="product-name"><%= item["title"]%> </a>
+      <div>years: <%= item["years"]%></div> 
+      <div>full series: <%= item["full_series"]%></div>
+      <div>number ofepisode: <%= item["number_of_episode"]%></div>
+     
+    </div>
+  </div>
+<% end %>
+</div>
+</section>
