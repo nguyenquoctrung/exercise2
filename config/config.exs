@@ -37,4 +37,9 @@ config :phoenix, :json_library, Jason
 
 # config :film, ecto_repos: [Film.Repo]
 
+config :scrivener_html,
+  routes_helper: Exercise2Web.Router.Helpers,
+  # If you use a single view style everywhere, you can configure it here. See View Styles below for more info.
+  view_style: :bootstrap
+
 import_config "#{Mix.env()}.exs"

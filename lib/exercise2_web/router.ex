@@ -16,9 +16,15 @@ defmodule Exercise2Web.Router do
   scope "/", Exercise2Web do
     pipe_through :browser
 
-    get "/", PageController, :index
-    get "/exercise", ExerciseController, :index
-    get "/exercise2", Exercise2Controller, :index
+    get("/", PageController, :index)
+    get("/save_file", PageController, :save_file)
+    get("/fetch_number", PageController, :fetch_number)
+    post("/import_file", PageController, :import_file)
+    get("/save_database", PageController, :save_database)
+    get("/exercise", ExerciseController, :index)
+    get("/exercise2", Exercise2Controller, :index)
+
+
   end
 
   # Other scopes may use custom stacks.

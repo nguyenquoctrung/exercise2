@@ -49,7 +49,10 @@ defmodule Exercise2.MixProject do
       {:floki, "~> 0.31.0"},
       {:ecto_sql, "~> 3.2"},
       {:postgrex, "~> 0.15"},
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2"},
+      {:scrivener_list, "~> 2.0"},
+      {:scrivener, "~> 2.0"},
+      {:scrivener_html, "~> 1.0"},
     ]
   end
 

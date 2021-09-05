@@ -5,10 +5,10 @@ defmodule Exercise2.Films do
   schema "films" do
     field :full_series, :boolean, default: false
     field :link, :string
-    field :number_of_episode, :integer
     field :thumnail, :string
+    field :number_of_episode, :integer
     field :title, :string
-    field :year, :integer
+    field :years, :integer
 
     timestamps()
   end
@@ -16,7 +16,7 @@ defmodule Exercise2.Films do
   @doc false
   def changeset(films, attrs) do
     films
-    |> cast(attrs, [:title, :link, :full_series, :number_of_episode, :thumnail, :year])
-    |> validate_required([:title, :link, :full_series, :number_of_episode, :thumnail, :year])
+    |> cast(attrs, [:title, :link, :full_series, :thumnail,:number_of_episode,  :years])
+    |> validate_required([:title, :link, :full_series, :thumnail, :number_of_episode, :years])
   end
 end

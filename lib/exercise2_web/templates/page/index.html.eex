@@ -5,16 +5,86 @@
  <%= form_for @conn, Routes.page_path(@conn, :index), [method: :get, class: "pull-right", id: "searchForm"], fn f -> %>
     <div class="search-cont row">
         <div class="column column-75 container">
-            <%= search_input f, :query, prompt: "- Category -" %>
+            <%= search_input f, :query, placeholder: :"Enter url"  ,prompt: "- url -" %>
         </div>
         <div class="column column-25">
           <%= submit "Crawling" %>
         </div>
+          
+        </div>
+       
         <div class="clear"></div>
     </div>
   <% end %>
+
+  <%= form_for @conn, Routes.page_path(@conn, :save_file), [method: :get, class: "pull-right", id: "SaveForm"], fn f -> %>
+    <div class="search-cont row">
+        <div class="column column-75 container">
+            <%= search_input f, :url, placeholder: :"Enter url"  ,prompt: "- url -" %>
+        </div>
+        <div class="column column-25">
+          <%= submit "Export"%>
+         
+          <!-- <%= button("Save", to: "/save_file", method: :post, class: "btn btn-success")%> -->
+        </div>
+          
+        </div>
+       
+        <div class="clear"></div>
+    </div>
+  <% end %>
+
+  <%= form_for @conn, Routes.page_path(@conn, :import_file), [multipart: true], fn f -> %>
+    <div class="row">
+        <div class="column column-75">
+           <%= file_input f, :upload, class: "form-control" %>
+        </div>
+        <div class="column column-25">
+          <%= submit "Upload"%>
+          <!-- <%= button("Save", to: "/save_file", method: :post, class: "btn btn-success")%> -->
+        </div>
+          
+        </div>
+    </div>
+  <% end %> 
+
+  <%= form_for @conn, Routes.page_path(@conn, :fetch_number), [method: :get, class: "pull-right", id: "FetchNumber"], fn f -> %>
+    <div class="search-cont row">
+        <div class="column column-50">
+           <%= search_input f, :url,placeholder: :"Enter url"  , prompt: "- url -" %>
+        </div>
+        <div class="column column-25">
+          <%= number_input f, :number, placeholder: :"Number page", step: "1" %>
+        </div>
+        <div class="column column-25">
+          <%= submit "Top number"%>
+        </div>
+          
+        </div>
+       
+        <div class="clear"></div>
+    </div>
+  <% end %>
+  <%= form_for @conn, Routes.page_path(@conn, :save_database), [method: :get, class: "pull-right", id: "SaveDatabase"], fn f -> %>
+    <div class="search-cont row">
+        <div class="column column-75">
+           <%= search_input f, :url, placeholder: :"Enter url"  ,prompt: "- url -" %>
+        </div>
+        <div class="column column-25">
+          <%= submit "Save Database"%>
+        </div>
+          
+        </div>
+    </div>
+  <% end %>
+  
+<h5 style="color: red;"><%= @data.mess%></h1>
+
 <div>
 <%= link "Home page!", to: Routes.page_path(@conn, :index) %>
+<%= if @data.page != nil do %>  
+  <%= pagination_links @data.page, view_style: :foundation%>
+<% end %>
 <%= if @data.total>0  do%>
   <section class="phx-product">
   <div>Total     : <%=@data.total%> </div>
@@ -23,11 +93,11 @@
   <%= for item <- @data.items do %>
     <div class="column column-25 ">
       <div class="item">
-        <div style="background-image: url(<%= item["thumnail"]%>); background-size: cover; height: 284.2px;"></div>
-        <a href="<%= item["link"]%>" target="_blank" class="product-name"><%= item["title"]%> </a>
-        <div>years: <%= item["years"]%></div> 
-        <div>full series: <%= item["full_series"]%></div>
-        <div>number ofepisode: <%= item["number_of_episode"]%></div>
+        <div style="background-image: url(<%= item[:thumnail]%>); background-size: cover; height: 284.2px;"></div>
+        <a href="<%= item[:link]%>" target="_blank" class="film-name"><%= item[:title]%> </a>
+        <div>years: <%= item[:years]%></div> 
+        <div>full series: <%= item[:full_series]%></div>
+        <div>number ofepisode: <%= item[:number_of_episode]%></div>
       
       </div>
     </div>

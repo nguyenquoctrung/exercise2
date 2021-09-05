@@ -8,7 +8,7 @@ defmodule Exercise2.Repo.Migrations.CreateFilms do
       add :full_series, :boolean, default: false, null: false
       add :number_of_episode, :integer
       add :thumnail, :string
-      add :year, :integer
+      add :years, :integer
 
       timestamps(default: fragment("NOW()"))
     end
