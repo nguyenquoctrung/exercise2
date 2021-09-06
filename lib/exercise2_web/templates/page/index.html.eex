@@ -40,7 +40,7 @@
            <%= file_input f, :upload, class: "form-control" %>
         </div>
         <div class="column column-25">
-          <%= submit "Upload"%>
+          <%= submit "Import"%>
           <!-- <%= button("Save", to: "/save_file", method: :post, class: "btn btn-success")%> -->
         </div>
           
@@ -57,7 +57,7 @@
           <%= number_input f, :number, placeholder: :"Number page", step: "1" %>
         </div>
         <div class="column column-25">
-          <%= submit "Top number"%>
+          <%= submit "Crawling"%>
         </div>
           
         </div>
