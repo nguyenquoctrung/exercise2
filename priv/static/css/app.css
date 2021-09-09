@@ -100,6 +100,36 @@ header nav a {
   }
 }
 
+.pagination{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: .25rem;
+}
+.pagination li{
+  position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+.pagination li:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+}
+.pagination .current{
+  background-color: #007bff;
+  color: white;
+}
+.pagination .current a{
+  color: white;
+}
 /* This file is for your main application css. */
 /* Alerts and form errors */
 .alert {
@@ -134,46 +164,3 @@ header nav a {
   display: block;
   margin: -1rem 0 2rem; }
 
-
-
-/* pagination */
-  .pagination {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    padding-left: 0;
-    list-style: none;
-    border-radius: .25rem;
-}
-.pagination a {
-  position: relative;
-  display: block;
-  padding: .5rem .75rem;
-  margin-left: -1px;
-  line-height: 1.25;
-  color: #007bff;
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-}
-.pagination .current a{
-  background-color: #007bff;
-  color: white;
-}
-.pagination .ellipsis{
-  position: relative;
-  display: block;
-  padding: .5rem .75rem;
-  margin-left: -1px;
-  line-height: 1.25;
-  color: #007bff;
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-}
-.page-item:first-child .a{
-  margin-left: 0;
-  border-top-left-radius: .25rem;
-  border-bottom-left-radius: .25rem;
-}
-.pagination a:not(:disabled):not(.disabled) {
-  cursor: pointer;
-}

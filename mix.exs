@@ -53,6 +53,7 @@ defmodule Exercise2.MixProject do
       {:scrivener_list, "~> 2.0"},
       {:scrivener, "~> 2.0"},
       {:scrivener_html, "~> 1.0"},
+      {:scrivener_ecto, "~> 2.0"}
     ]
   end
 

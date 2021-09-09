@@ -3,12 +3,16 @@ defmodule Exercise2.Repo.Migrations.CreateFilms do
 
   def change do
     create table(:films) do
-      add :title, :string
-      add :link, :string
+      add :title, :text
+      add :link, :text
       add :full_series, :boolean, default: false, null: false
       add :number_of_episode, :integer
-      add :thumnail, :string
-      add :years, :integer
+      add :thumnail, :text
+      # add :years, :integer
+      add :country, :string
+      add :release_year, :string
+      add :actors, :string
+      add :directors, :string
 
       timestamps(default: fragment("NOW()"))
     end

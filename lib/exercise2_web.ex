@@ -20,6 +20,9 @@ defmodule Exercise2Web do
   def controller do
     quote do
       use Phoenix.Controller, namespace: Exercise2Web
+      alias Film.Repo
+      import Ecto
+      import Ecto.Query
 
       import Plug.Conn
       import Exercise2Web.Gettext

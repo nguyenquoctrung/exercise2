@@ -99,3 +99,34 @@ header nav a {
     margin: 2rem 1rem;
   }
 }
+
+.pagination{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: .25rem;
+}
+.pagination li{
+  position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+.pagination li:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+}
+.pagination .current{
+  background-color: #007bff;
+  color: white;
+}
+.pagination .current a{
+  color: white;
+}

@@ -1,64 +1,132 @@
 defmodule Exercise2Data do
-  # import Ecto.Query
-  alias Exercise2.Repo
-  alias Exercise2.Categorys
-  alias Exercise2.Films
-
-  def insert_category(data) do
-    category_to_insert = [
-      %{name: "Phim Âu"},
-      %{name: "Phim Á"}
-    ]
-
-    Repo.insert_all(Categorys, category_to_insert)
-
-    # caterogy=%CategorySchema{name: "Phim Hoat hinh"}
-    # Repo.insert(caterogy)
-
-    # category_to_insert=
-    # [
-    #   %{name: "Phim Việt Nam",inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(),:second), updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(),:second)},
-    #   %{name: "Phim Hành động",inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(),:second),updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(),:second)}
-    # ]
-  end
+  import Ecto.Query
+  alias Exercise2.{Repo, Actors, Films, Directors}
 
   @spec insert_film(any) :: none
   def insert_film(data) do
-    # data = [
-    #   %{
-    #     full_series: false,
-    #     link: "https://phephims.net/phim/van-gioi-tien-tung-7207",
-    #     number_of_episode: 198,
-    #     thumnail: "https://i0.wp.com/img.media3s.xyz/image/2019/04/van-gioi-tien-tung.jpg",
-    #     title: "Vạn Giới Tiên Tung",
-    #     year: 2019
-    #   },
-    #   %{
-    #     full_series: true,
-    #     link: "https://phephims.net/phim/nhung-thien-than-sa-nga-4l0-7121",
-    #     number_of_episode: 12,
-    #     thumnail: "https://i0.wp.com/img.media3s.xyz/image/2019/04/nhung-thien-than-sa-nga.jpg",
-    #     title: "Những Thiên Thần Sa Ngã",
-    #     year: 2019
-    # },
-    # %{
-    #     full_series: true,
-    #     link: "https://phephims.net/phim/biet-doi-giai-cuu-rong-8411",
-    #     number_of_episode: 14,
-    #     thumnail: "https://i0.wp.com/img.media3s.xyz/image/2020/01/biet-doi-giai-cuu-rong.jpg",
-    #     title: "Biệt Đội Giải Cứu Rồng",
-    #     year: 2020
-    # }
-    # ]
+    Repo.insert_all(Films, data)
+  end
 
-    # case lst do
-    #   ""-> 0
-    #   _ ->String.to_integer(lst)
-    # end
-    #raise data
-    Repo.insert_all(Films,data)
+  # Films
 
-    # end
-    # Repo.insert_all(Films,data)
+  @spec creat_films(:invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}) ::
+          any
+  def creat_films(attrs) do
+    %Films{}
+    |> Films.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def list_films() do
+    Repo.all(Films)
+  end
+
+  @spec create_film(:invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}) ::
+          any
+  def create_films(attrs \\ %{}) do
+    %Films{}
+    |> Films.changeset(attrs)
+    |> Repo.insert()
+
+    # Multi.new()
+    # |> Multi.insert(:films, Films.changeset(%Films{}, attrs))
+    # |> Multi.merge(fn %{films: films} ->
+    #   # That is the inserted user from the first part of the multi
+    #   Multi.new()
+    #   |> Multi.insert_all(:posts, build_insert_all_posts_changeset(user))
+    # end)
+    # |> Repo.transaction()
+  end
+
+  def get_films_name(name) do
+    Repo.get_by(Films, name)
+  end
+
+  def fetch_or_create_film(fetch_by, attrs) do
+    with nil <- get_film_by(fetch_by),
+         {:ok, film} <- create_film(attrs) do
+      {:ok, film}
+    else
+      %Films{} = film ->
+        {:ok, film}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        if changeset.errors[:my_unique_field] == {"has already been taken", []} do
+          fetch_or_create_film(fetch_by, attrs)
+        else
+          {:error, changeset}
+          raise attrs
+        end
+    end
+  end
+
+  def get_film_by(by) do
+    Repo.get_by(Films, title: by)
+  end
+
+  def create_film(attrs) do
+    %Films{}
+    |> Films.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def search_films(name, director, country) do
+    like_title = "%#{name}%"
+    director_like = "%#{director}%"
+    country_like = "%#{country}%"
+
+    query =
+      from(u in "films",
+        where: like(u.title, ^like_title),
+        # where: ilike(u.country, ^director_like),
+        # where: ilike(u.directors, ^country_like),
+        distinct: true,
+        order_by: u.title,
+        select:
+          {u.title, u.link, u.full_series, u.thumnail, u.number_of_episode, u.country,u.release_year}
+      )
+
+    Repo.all(query)
+  end
+
+  # actors
+  def create_actors(attrs) do
+    %Actors{}
+    |> Actors.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  # directors
+  def create_directors(name) do
+    director = %{name: name}
+
+    %Directors{}
+    |> Directors.changeset(director)
+    |> Repo.insert()
+  end
+
+  def directors_by_name(name) do
+    Repo.get_by(Directors, name: name)
+  end
+
+  def get_all_directors() do
+    query =
+      from(u in "films",
+        distinct: true,
+        order_by: u.directors,
+        select: u.directors
+      )
+    Repo.all(query)
+  end
+
+  def get_all_countries() do
+    query =
+      from(u in "films",
+        distinct: true,
+        order_by: u.country,
+        select: u.country
+      )
+
+    Repo.all(query)
   end
 end
