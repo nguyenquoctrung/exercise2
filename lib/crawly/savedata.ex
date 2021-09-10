@@ -11,31 +11,20 @@ defmodule Exercise2Data do
 
   @spec creat_films(:invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}) ::
           any
-  def creat_films(attrs) do
-    %Films{}
-    |> Films.changeset(attrs)
-    |> Repo.insert()
+  def creat_films(params) do
+    # %Films{}
+    # |> Films.changeset(attrs)
+    # |> Repo.insert()
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:record_1, Films.changeset(%Films{}, params))
+    |> Ecto.Multi.insert(:record_2, Directors.changeset(%Directors{}, params))
+    |> Repo.transaction()
   end
+
 
   def list_films() do
     Repo.all(Films)
-  end
-
-  @spec create_film(:invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}) ::
-          any
-  def create_films(attrs \\ %{}) do
-    %Films{}
-    |> Films.changeset(attrs)
-    |> Repo.insert()
-
-    # Multi.new()
-    # |> Multi.insert(:films, Films.changeset(%Films{}, attrs))
-    # |> Multi.merge(fn %{films: films} ->
-    #   # That is the inserted user from the first part of the multi
-    #   Multi.new()
-    #   |> Multi.insert_all(:posts, build_insert_all_posts_changeset(user))
-    # end)
-    # |> Repo.transaction()
   end
 
   def get_films_name(name) do
@@ -70,24 +59,7 @@ defmodule Exercise2Data do
     |> Repo.insert()
   end
 
-  def search_films(name, director, country) do
-    like_title = "%#{name}%"
-    director_like = "%#{director}%"
-    country_like = "%#{country}%"
 
-    query =
-      from(u in "films",
-        where: like(u.title, ^like_title),
-        # where: ilike(u.country, ^director_like),
-        # where: ilike(u.directors, ^country_like),
-        distinct: true,
-        order_by: u.title,
-        select:
-          {u.title, u.link, u.full_series, u.thumnail, u.number_of_episode, u.country,u.release_year}
-      )
-
-    Repo.all(query)
-  end
 
   # actors
   def create_actors(attrs) do
@@ -126,7 +98,6 @@ defmodule Exercise2Data do
         order_by: u.country,
         select: u.country
       )
-
     Repo.all(query)
   end
 end

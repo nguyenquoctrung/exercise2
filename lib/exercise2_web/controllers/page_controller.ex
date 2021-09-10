@@ -1,4 +1,5 @@
 defmodule Exercise2Web.PageController do
+  require Logger
   use Exercise2Web, :controller
   @url_default "https://mphimmoi.net/"
   def index(conn, params) do
@@ -65,8 +66,8 @@ defmodule Exercise2Web.PageController do
         render(conn, "index.html",
           data: %{items: item, total: totals, crawled: crawled_at, mess: "", page: nil}
         )
-        else
-          render(conn, "index.html",
+      else
+        render(conn, "index.html",
           data: %{items: nil, total: 0, crawled: crawled_at, mess: "", page: nil}
         )
       end
@@ -91,14 +92,15 @@ defmodule Exercise2Web.PageController do
     url = get_in(params, ["url"])
     number = get_in(params, ["number"])
     crawled_at = DateTime.now!("Etc/UTC") |> DateTime.to_string() |> String.slice(0..-9)
+
     if url != nil do
-      #pages = get_in(params, ["page"])|> String.to_integer()
-        # if Map.has_key?(params, "page") do
-        #     1
-        #   else
-        #     {:ok, page} = Map.fetch(params, "page")
-        #     page |> String.to_integer()
-        # end
+      # pages = get_in(params, ["page"])|> String.to_integer()
+      # if Map.has_key?(params, "page") do
+      #     1
+      #   else
+      #     {:ok, page} = Map.fetch(params, "page")
+      #     page |> String.to_integer()
+      # end
 
       config = %Scrivener.Config{page_number: 1, page_size: 20}
       items = Crawly.fetch_number(url, number)
@@ -126,29 +128,35 @@ defmodule Exercise2Web.PageController do
     crawled_at = DateTime.now!("Etc/UTC") |> DateTime.to_string() |> String.slice(0..-9)
 
     if url != nil do
-       data_film=Exercise2.Films|>Film.Repo.all()
-       list_film_data = data_film|>Enum.map(fn x ->
-        %{
-          title: x.title,
-          link: x.link,
-          full_series: x.full_series,
-          thumnail: x.thumnail,
-          number_of_episode: x.number_of_episode,
-          # years: x.years,
-          country: x.country,
-          release_year: x.release_year,
-          actors: x.actors,
-          directors: x.directors
-        }
+      data_film = Exercise2.Films |> Film.Repo.all()
+
+      list_film_data =
+        data_film
+        |> Enum.map(fn x ->
+          %{
+            title: x.title,
+            link: x.link,
+            full_series: x.full_series,
+            thumnail: x.thumnail,
+            number_of_episode: x.number_of_episode,
+            # years: x.years,
+            country: x.country,
+            release_year: x.release_year,
+            actors: x.actors,
+            directors: x.directors
+          }
+        end)
+      Logger.info("START: #{inspect(url)}")
+      items = Crawly.fetch_all(url)
+
+      new_items = items -- list_film_data
+      total = Enum.count(new_items)
+
+      Enum.map(new_items, fn x ->
+        # Exercise2Data.fetch_or_create_film(x.title,x)
+        Exercise2Data.create_film(x)
       end)
 
-      items = Crawly.fetch_all(url)
-      new_items= items -- list_film_data
-      total = Enum.count(new_items)
-      Enum.map(new_items,fn x ->
-        #Exercise2Data.fetch_or_create_film(x.title,x)
-        Exercise2Data.create_film(x)
-       end)
       # if total > 0 do
       #   Exercise2Data.insert_film(items)
       # end

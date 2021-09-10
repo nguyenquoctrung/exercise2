@@ -17,7 +17,7 @@
   <% end %>
 <%= if Enum.count(@film) > 0 do %>
   <%= if @page.total_pages > 1 do %>
-    <%= pagination_links  @page ,some_parameter: "data" ,view_style: :foundation%>
+    <%= pagination_links  @page,view_style: :foundation%>
   <% end %>
   <% else %>
     <h5>Không tìm thấy dữ liệu</h5>

@@ -1,4 +1,6 @@
 defmodule Crawly do
+  require Logger
+
   def fetch(url) do
     total = total_page(url) + 1
     crawl(total, url)
@@ -39,9 +41,10 @@ defmodule Crawly do
       case File.write("file_" <> file_name <> "_data.json", content) do
         :ok ->
           "file_" <> file_name <> "_data.json"
+
         _ ->
           nil
-        # {:error, reason} -> false
+          # {:error, reason} -> false
       end
 
     res
@@ -49,6 +52,7 @@ defmodule Crawly do
 
   def crawl(total_page, url) do
     total = total_page
+
     res =
       Enum.map(1..total, fn x ->
         Process.sleep(random_latency())
@@ -145,8 +149,9 @@ defmodule Crawly do
           )
         end)
       end)
-
+    Logger.info("LIST DATA: #{inspect(res)}")
     res |> List.flatten()
+
   end
 
   def crawl_detail(url) do
@@ -200,6 +205,10 @@ defmodule Crawly do
   end
 
   def total_page(url) do
+
+    data = url |> HTTPoison.get()
+    Logger.info("Error: #{inspect(data)}")
+
     {:ok, documents} =
       url
       |> HTTPoison.get!()
